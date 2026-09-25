@@ -1,0 +1,8 @@
+akun.txt
+grok_tokens.txt
+screenshots/
+*.log
+node_modules/
+config.yaml
+data/
+.env

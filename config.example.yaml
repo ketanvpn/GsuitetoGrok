@@ -1,0 +1,21 @@
+server:
+  listen: "0.0.0.0:8000"
+  maxBodyBytes: 33554432
+  trustedProxies: []
+  readTimeout: 15m
+  requestTimeout: 2h
+  swaggerEnabled: false
+
+auth:
+  accessTokenTTL: 15m
+  refreshTokenTTL: 720h
+  secureCookies: false
+
+secrets:
+  # Digenerate otomatis oleh setup.sh
+  jwtSecret: "GENERATE_VIA_SETUP_SH"
+  credentialEncryptionKey: "GENERATE_VIA_SETUP_SH"
+
+bootstrapAdmin:
+  username: "admin"
+  password: "GENERATE_VIA_SETUP_SH"

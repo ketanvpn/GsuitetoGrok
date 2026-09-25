@@ -1,0 +1,25 @@
+{
+  "name": "gsuite-to-grok",
+  "version": "1.0.0",
+  "description": "Automated Google Workspace (GSuite) to Grok (xAI) Account Harvester & grok2api Gateway Synchronizer",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "puppeteer": "^24.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "keywords": [
+    "grok",
+    "xai",
+    "gsuite",
+    "automation",
+    "grok2api",
+    "9router",
+    "puppeteer"
+  ],
+  "author": "KetanTech",
+  "license": "MIT"
+}

@@ -1,0 +1,18 @@
+name: grok2api
+
+services:
+  grok2api:
+    container_name: grok2api
+    image: ghcr.io/chenyme/grok2api:latest
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      TZ: Asia/Jakarta
+    volumes:
+      - ./config.yaml:/run/grok2api/config.yaml:ro
+      - ./data:/app/data
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+    security_opt:
+      - no-new-privileges:true
