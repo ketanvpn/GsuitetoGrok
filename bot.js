@@ -5,6 +5,20 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 
+// --- ANSI Colors ---
+const c = {
+  reset: '\x1b[0m',
+  bright: '\x1b[1m',
+  dim: '\x1b[2m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  magenta: '\x1b[35m',
+  cyan: '\x1b[36m',
+  gray: '\x1b[90m',
+};
+
 const CHROME_PATH = process.env.CHROME_PATH || '/root/.hermes/tools/chromium-1208/chrome-linux64/chrome';
 const AKUN_FILE = path.join(__dirname, 'akun.txt');
 const OUTPUT_FILE = path.join(__dirname, 'grok_tokens.txt');
@@ -285,24 +299,37 @@ async function main() {
   console.log(` Target Gateway: http://127.0.0.1:${GROK2API_PORT}`);
   console.log(`==========================================`);
 
+  const startTime = Date.now();
+  let successCount = 0;
+  let failCount = 0;
+
   for (let i = 0; i < accounts.length; i++) {
     const acc = accounts[i];
     const success = await processAccount(acc.email, acc.password, i + 1, accounts.length);
 
     if (success) {
+      successCount++;
       const remainingLines = fs.readFileSync(AKUN_FILE, 'utf-8')
         .split('\n')
         .filter(l => l.trim() && !l.startsWith('#') && !l.includes(acc.email));
       fs.writeFileSync(AKUN_FILE, remainingLines.join('\n'));
+    } else {
+      failCount++;
     }
 
     await sleep(2500);
   }
 
-  console.log(`\n==========================================`);
-  console.log(` 🎉 SEMUA SELESAI!`);
-  console.log(` Token Grok tersimpan di: ${OUTPUT_FILE}`);
-  console.log(`==========================================`);
+  const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+
+  console.log(`\n${c.bright}════════════════════════════════════════════════════════════════════${c.reset}`);
+  console.log(`${c.bright}📊 RINGKASAN PEMANENAN TOKEN GROK (xAI):${c.reset}`);
+  console.log(`  • Total Akun Diperiksa : ${accounts.length}`);
+  console.log(`  • ${c.green}Berhasil Disimpan    : ${successCount}${c.reset}`);
+  console.log(`  • ${c.red}Gagal / Kendala      : ${failCount}${c.reset}`);
+  console.log(`  • Total Durasi         : ${elapsed}s`);
+  console.log(`  • Hasil Tersimpan      : ${OUTPUT_FILE}`);
+  console.log(`${c.bright}════════════════════════════════════════════════════════════════════${c.reset}\n`);
 }
 
 main().then(() => process.exit(0)).catch(err => {
